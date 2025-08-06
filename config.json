@@ -1,11 +1,14 @@
 {
   "prefix": "gen:",
   "version": "1.20.1",
+  "host": "chipmunk.land",
+  "username": "E11eGPT1o",
+  "port": 25565,
   "default": "ollama",
   "gemini_model": "gemini-2.5-flash",
-  "ollama_model": "qwen3:1.7b",
+  "ollama_default_model": "qwen3:1.7b",
   "system_message": "don't give long winded responses, no emojis, no asterisks, or extra spaces or newlines",
   "maxQueue": 3,
-  "ollama_history_size": 12,
+  "ollama_history_size": 24,
   "gemini_history_size": 64
 }

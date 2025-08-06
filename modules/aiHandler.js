@@ -5,6 +5,7 @@ import { queryOl } from "./ai/ollama.js";
 export class AI {
   constructor() {
     this.handler = config.default;
+    this.ollama_model = config.ollama_default_model;
     this.queue = 0;
     this.gemini_history = [];
     this.ollama_history = [];
@@ -15,7 +16,7 @@ export class AI {
       case "ollama": {
         this.queue++;
         const response = await queryOl(
-          config.ollama_model,
+          this.ollama_model,
           message,
           system_message,
           this.ollama_history,

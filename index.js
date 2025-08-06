@@ -4,7 +4,7 @@ import { Client } from "./modules/minecraft.js";
 import { handleCommand } from "./modules/tools/commands.js";
 import { loadPlugins } from "./modules/tools/generic.js";
 
-const minecraft = new Client("E11eGPT1o", "chipmunk.land", 25565, true);
+const minecraft = new Client(config.username, config.host, config.port, true);
 const aiHandler = new AI();
 loadPlugins(minecraft, aiHandler);
 
