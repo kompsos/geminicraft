@@ -1,0 +1,19 @@
+{
+  "name": "geminicraft",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@google/genai": "^1.12.0",
+    "minecraft-data": "^3.94.0",
+    "minecraft-protocol": "^1.60.0",
+    "ollama": "^0.5.16",
+    "prismarine-item": "^1.17.0",
+    "stopword": "^3.1.5"
+  }
+}
