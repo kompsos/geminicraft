@@ -9,7 +9,6 @@ export async function execute(client, args, aiHandler) {
     client.broadcast("Generating reply please be patient");
     const reply = await aiHandler.askGEN(args.join(" "), config.system_message);
 
-    console.info(escape(reply));
     client.broadcast(escape(reply));
   }
 }

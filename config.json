@@ -4,11 +4,9 @@
   "host": "chipmunk.land",
   "username": "E11eGPT1o",
   "port": 25565,
-  "default": "ollama",
-  "gemini_model": "gemini-2.5-flash",
   "ollama_default_model": "qwen3:1.7b",
-  "system_message": "don't give long winded responses, no emojis, no asterisks, or extra spaces or newlines",
-  "maxQueue": 3,
-  "ollama_history_size": 24,
-  "gemini_history_size": 64
+  "system_message": "don't give long winded responses, no emojis, no asterisks",
+  "maxQueue": 6,
+  "timeout": 240000,
+  "ollama_history_size": 24
 }
