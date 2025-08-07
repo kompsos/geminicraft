@@ -5,13 +5,14 @@ const Item = require("prismarine-item")(config.version);
 const EventEmitter = require("node:events");
 const crypto = require("crypto");
 const { delay } = require("./tools/generic");
-
+const parser = require("./tools/parser");
 class Client extends EventEmitter {
   constructor(username, host, port, reconnect) {
     super();
     this.username = username;
     this.host = host;
     this.port = port;
+    this.message_history = [];
 
     this.client = mc.createClient({
       host: host,
@@ -53,6 +54,18 @@ class Client extends EventEmitter {
 
       this.tpConfirm = true;
       this.emit("position", data);
+    });
+
+    this.on("chat", (ev) => {
+      if (ev.plainMessage.includes(config.prefix)) return;
+      console.log({
+        role: "user",
+        content: `This persons name is ${parser(ev.senderName).clean}, and they said ${ev.plainMessage}`,
+      });
+      this.message_history.push({
+        role: parser(ev.senderName).clean,
+        content: `${ev.plainMessage}`,
+      });
     });
   }
 

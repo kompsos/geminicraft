@@ -1,7 +1,7 @@
 {
   "prefix": "gen:",
   "version": "1.20.1",
-  "host": "chipmunk.land",
+  "host": "kaboom.pw",
   "username": "E11eGPT1o",
   "port": 25565,
   "ollama_default_model": "qwen3:1.7b",

@@ -8,8 +8,9 @@ export class AI {
     this.ollama_history = [];
   }
 
-  async askGEN(message, system_message) {
+  async askGEN(message, system_message, use_memory, local_chat_history) {
     let didTimeout = false;
+
     try {
       this.queue++;
       const response = await Promise.race([
@@ -18,6 +19,7 @@ export class AI {
           message,
           system_message,
           this.ollama_history,
+          local_chat_history,
         ),
         new Promise((_, reject) =>
           setTimeout(() => {
@@ -27,16 +29,19 @@ export class AI {
         ),
       ]);
 
-      this.pushOllama({ role: "user", content: message });
-      this.pushOllama({
-        role: "model",
-        content: response.message.content,
-      });
+      if (use_memory) {
+        this.pushOllama({ role: "user", content: message });
+        this.pushOllama({
+          role: "model",
+          content: response.message.content,
+        });
+      }
 
       this.queue--;
       return response.message.content;
     } catch (err) {
       this.queue--;
+      console.error(err);
       return "A queued generation has timed out, input: " + message;
     }
   }

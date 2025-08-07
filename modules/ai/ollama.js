@@ -1,10 +1,16 @@
 import ollama from "ollama";
 
-export async function queryOl(model, input, prompt, history) {
+export async function queryOl(
+  model,
+  input,
+  prompt,
+  history,
+  local_chat_history,
+) {
   //if (history[0] != undefined) console.log(history[0].content);
   const response = await ollama.chat({
     model: model,
-    messages: history.concat([
+    messages: history.concat(local_chat_history, [
       {
         role: "system",
         content: prompt,

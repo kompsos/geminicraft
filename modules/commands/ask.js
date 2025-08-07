@@ -7,7 +7,12 @@ export async function execute(client, args, aiHandler) {
     client.broadcast("The queue is full, want to suck my dick instead?");
   } else {
     client.broadcast("Generating reply please be patient");
-    const reply = await aiHandler.askGEN(args.join(" "), config.system_message);
+    const reply = await aiHandler.askGEN(
+      args.join(" "),
+      config.system_message,
+      true,
+      [],
+    );
 
     client.broadcast(escape(reply));
   }
