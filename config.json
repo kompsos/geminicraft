@@ -1,12 +1,14 @@
 {
   "prefix": "gen:",
   "version": "1.20.1",
-  "host": "kaboom.pw",
+  "host": "sigma.shhnowisnottheti.me",
   "username": "E11eGPT1o",
   "port": 25565,
   "ollama_default_model": "qwen3:1.7b",
   "system_message": "don't give long winded responses, no emojis, no asterisks",
   "maxQueue": 6,
   "timeout": 240000,
-  "ollama_history_size": 24
+  "ollama_history_size": 24,
+  "command_mode": false,
+  "verification_mode": true
 }

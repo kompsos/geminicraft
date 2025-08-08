@@ -2,7 +2,6 @@ const { States } = require("minecraft-protocol");
 
 exports.execute = (client, ai) => {
   setInterval(() => {
-    console.clear();
     console.table({
       ollama_model: ai.ollama_model,
       generations_queued: ai.queue,
@@ -13,6 +12,10 @@ exports.execute = (client, ai) => {
               0,
               32,
             ) + "...",
+      key: client.security_key,
+      verified: client.verified_usernames
+        .map((player) => player.username)
+        .join(", "),
     });
 
     console.info(`Connected to ${client.host}:${client.port}`);

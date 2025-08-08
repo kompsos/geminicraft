@@ -1,6 +1,6 @@
 const fs = require("fs");
-
-function handleCommand(client, name, arguments, aiHandler) {
+const config = require("./../../config.json");
+function handleCommand(client, name, arguments, aiHandler, username, sender) {
   const directoryPath = "./modules/commands";
   fs.readdir(directoryPath, (err, files) => {
     if (err) {
@@ -12,7 +12,27 @@ function handleCommand(client, name, arguments, aiHandler) {
       const command = require("./../commands/" + file);
 
       if (command.name === name) {
-        command.execute(client, arguments, aiHandler);
+        if (
+          config.verification_mode &&
+          command.verification != undefined &&
+          command.verification == true
+        ) {
+          var includes = false;
+          client.verified_usernames.forEach((player) => {
+            if (player.username == username) includes = true;
+            return;
+          });
+
+          if (username != undefined && includes) {
+            command.execute(client, arguments, aiHandler, username, sender);
+            return;
+          } else {
+            client.broadcast("Nuh uh you can't do that! You are not verified!");
+            return;
+          }
+        } else {
+          command.execute(client, arguments, aiHandler, username, sender);
+        }
       }
     });
   });

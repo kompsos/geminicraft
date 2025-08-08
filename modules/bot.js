@@ -1,10 +1,10 @@
-const config = require("./../config.json");
+const config = require("../config.json");
 const mc = require("minecraft-protocol");
 const mcData = require("minecraft-data")(config.version);
 const Item = require("prismarine-item")(config.version);
 const EventEmitter = require("node:events");
 const crypto = require("crypto");
-const { delay } = require("./tools/generic");
+const { delay, splitStringByLength } = require("./tools/generic");
 const parser = require("./tools/parser");
 class Client extends EventEmitter {
   constructor(username, host, port, reconnect) {
@@ -12,7 +12,9 @@ class Client extends EventEmitter {
     this.username = username;
     this.host = host;
     this.port = port;
+    this.security_key = crypto.randomBytes(32).toString("hex");
     this.message_history = [];
+    this.verified_usernames = [];
 
     this.client = mc.createClient({
       host: host,
@@ -21,6 +23,15 @@ class Client extends EventEmitter {
       version: config.version,
     });
 
+    this.client.on("player_remove", (packet) => {
+      packet.players.forEach((uuid) => {
+        this.verified_usernames = this.verified_usernames.filter(
+          (player) => player.sender !== uuid,
+        );
+      });
+    });
+
+    //this.on("player_left", ())
     this.client.on("end", (reason) => {
       console.error(
         "Disconnected from " + host + ":" + port + "\nReason: " + reason,
@@ -57,15 +68,23 @@ class Client extends EventEmitter {
     });
 
     this.on("chat", (ev) => {
-      if (ev.plainMessage.includes(config.prefix)) return;
-      console.log({
-        role: "user",
-        content: `This persons name is ${parser(ev.senderName).clean}, and they said ${ev.plainMessage}`,
-      });
-      this.message_history.push({
-        role: parser(ev.senderName).clean,
-        content: `${ev.plainMessage}`,
-      });
+      if (
+        ev.plainMessage != undefined &&
+        ev.plainMessage.includes(config.prefix)
+      )
+        return;
+
+      if (ev.plainMessage != undefined && ev.senderName != undefined) {
+        console.log({
+          role: "user",
+          content: `This persons name is ${parser(ev.senderName).clean}, and they said ${ev.plainMessage}`,
+        });
+
+        this.message_history.push({
+          role: parser(ev.senderName).clean,
+          content: `${ev.plainMessage}`,
+        });
+      }
     });
   }
 
@@ -108,7 +127,15 @@ class Client extends EventEmitter {
   }
 
   broadcast(message) {
-    this.run_command(`bcraw ${message} `);
+    if (config.command_mode) {
+      this.run_command(`say ${message} `);
+    } else {
+      const parsed = splitStringByLength(message, 255);
+      parsed.forEach((string) => {
+        delay(120);
+        this.message(string);
+      });
+    }
   }
 
   set_item(id) {

@@ -4,6 +4,14 @@ function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function splitStringByLength(text, maxLength) {
+  const result = [];
+  for (let i = 0; i < text.length; i += maxLength) {
+    result.push(text.slice(i, i + maxLength));
+  }
+  return result;
+}
+
 function loadPlugins(client, ai) {
   const directoryPath = "./modules/loadables";
   fs.readdir(directoryPath, (err, files) => {
@@ -35,4 +43,5 @@ module.exports = {
   delay,
   loadPlugins,
   escape,
+  splitStringByLength,
 };

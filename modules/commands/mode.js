@@ -50,3 +50,4 @@ async function ollamaOptions(client, arguments, aiHandler) {
 }
 
 exports.name = "mode";
+exports.verification = true;
